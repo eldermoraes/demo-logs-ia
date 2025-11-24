@@ -34,7 +34,7 @@ public class LogIngestionResource {
 
             // Retrieves the ID from the ScopedValue inside the business method
             String currentId = ContextConfig.CORRELATION_ID.get();
-            LOG.infof("Processando log na Virtual Thread: %s | ID: %s",
+            LOG.infof("Processing log on Virtual Thread: %s | ID: %s",
                     Thread.currentThread(), currentId);
 
             // Calls the AI to structure the data
