@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Insight Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Log Insight Dashboard</h1>
+            <div class="status-bar">
+                <div class="status-item">
+                    <span class="status-label">Connection:</span>
+                    <span id="connection-status" class="status-value disconnected">Disconnected</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Total Logs:</span>
+                    <span id="total-logs" class="status-value">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Critical:</span>
+                    <span id="critical-count" class="status-value critical">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Errors:</span>
+                    <span id="error-count" class="status-value error">0</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="controls">
+            <button id="clear-btn" class="btn btn-secondary">Clear Logs</button>
+            <button id="pause-btn" class="btn btn-primary">Pause</button>
+            <label class="checkbox-label">
+                <input type="checkbox" id="auto-scroll" checked>
+                Auto-scroll
+            </label>
+            <div class="filter-group">
+                <label for="severity-filter">Filter by Severity:</label>
+                <select id="severity-filter">
+                    <option value="all">All</option>
+                    <option value="CRITICAL">Critical</option>
+                    <option value="ERROR">Error</option>
+                    <option value="WARN">Warning</option>
+                    <option value="INFO">Info</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table id="logs-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Severity</th>
+                        <th>Component</th>
+                        <th>Error Type</th>
+                        <th>Root Cause Summary</th>
+                        <th>Suggested Action</th>
+                    </tr>
+                </thead>
+                <tbody id="logs-tbody">
+                    <!-- Logs will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+
+        <div id="empty-state" class="empty-state">
+            <div class="empty-icon">📊</div>
+            <h2>Waiting for logs...</h2>
+            <p>The system will automatically display log analysis results as they arrive.</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

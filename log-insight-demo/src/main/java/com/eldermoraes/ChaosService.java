@@ -18,6 +18,9 @@ public class ChaosService {
     private static final Logger LOG = Logger.getLogger(ChaosService.class);
     private final Random random = new Random();
 
+    @Inject
+    LogAnalyzerAgent analyzer;
+
     // Paired component-tech mapping for realistic error scenarios
     private static final Map<String, List<String>> COMPONENT_TECH_MAP = Map.ofEntries(
         Map.entry("database_connection_pool", List.of("postgres", "mysql", "mongodb", "oracle", "mariadb")),
@@ -40,7 +43,7 @@ public class ChaosService {
     @Inject
     FailureGeneratorAgent agent;
 
-    // Emulates a log flow on each 1s
+    // Emulates a log flow on each 1.3s
     @Scheduled(every = "1.3s")
     void generateChaos() {
         // Randomly select a component
@@ -56,6 +59,15 @@ public class ChaosService {
 
         // IRL, this could be sent to stdout or even Kafka
         LOG.error(logEntry);
+
+        // Analyze the log and broadcast to UI
+        try {
+            String correlationId = java.util.UUID.randomUUID().toString();
+            LogAnalysisResult analysis = analyzer.analyze(logEntry, correlationId);
+            LogAnalysisWebSocket.broadcast(analysis);
+        } catch (Exception e) {
+            LOG.errorf("Failed to analyze log: %s", e.getMessage());
+        }
     }
 
     @RegisterAiService
