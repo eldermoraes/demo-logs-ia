@@ -52,7 +52,7 @@ public class ChaosService {
         String tech = technologies.get(random.nextInt(technologies.size()));
         
         // Asks AI to create a realistic error log
-        String logEntry = agent.generateErrorLog(component, tech);
+        String logEntry = agent.generateErrorLog(1L, component, tech);
 
         // IRL, this could be sent to stdout or even Kafka
         LOG.error(logEntry);
