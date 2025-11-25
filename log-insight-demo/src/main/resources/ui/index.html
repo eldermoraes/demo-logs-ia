@@ -27,6 +27,14 @@
                     <span class="status-label">Errors:</span>
                     <span id="error-count" class="status-value error">0</span>
                 </div>
+                <div class="status-item">
+                    <span class="status-label">Warnings:</span>
+                    <span id="warning-count" class="status-value warning">0</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Info:</span>
+                    <span id="info-count" class="status-value info">0</span>
+                </div>
             </div>
         </header>
 
@@ -53,12 +61,13 @@
             <table id="logs-table">
                 <thead>
                     <tr>
-                        <th>Timestamp</th>
-                        <th>Severity</th>
-                        <th>Component</th>
-                        <th>Error Type</th>
-                        <th>Root Cause Summary</th>
-                        <th>Suggested Action</th>
+                        <th data-column="timestamp">Timestamp<div class="resizer"></div></th>
+                        <th data-column="severity">Severity<div class="resizer"></div></th>
+                        <th data-column="component">Component<div class="resizer"></div></th>
+                        <th data-column="errorType">Error Type<div class="resizer"></div></th>
+                        <th data-column="rootCause">Root Cause Summary<div class="resizer"></div></th>
+                        <th data-column="originalLog">Original Log<div class="resizer"></div></th>
+                        <th data-column="suggestedAction">Suggested Action<div class="resizer"></div></th>
                     </tr>
                 </thead>
                 <tbody id="logs-tbody">
@@ -71,6 +80,19 @@
             <div class="empty-icon">📊</div>
             <h2>Waiting for logs...</h2>
             <p>The system will automatically display log analysis results as they arrive.</p>
+        </div>
+
+        <!-- Modal for Original Log -->
+        <div id="log-modal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Original Log</h2>
+                    <span class="modal-close">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <pre id="modal-log-content"></pre>
+                </div>
+            </div>
         </div>
     </div>
 

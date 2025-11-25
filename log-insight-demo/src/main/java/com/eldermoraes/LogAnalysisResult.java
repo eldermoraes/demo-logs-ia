@@ -6,5 +6,6 @@ public record LogAnalysisResult(
         String errorType,       // ex: ConnectionTimeout, NullPointer
         String rootCauseSummary,// Explicação humana (max 10 palavras)
         String suggestedAction,  // ex: "Restart Pod", "Increase Pool", etc
-        String timestamp        // ISO 8601 timestamp
+        String timestamp,        // ISO 8601 timestamp
+        String originalLog      // Original raw log entry
 ) {}

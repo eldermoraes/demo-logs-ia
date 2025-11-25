@@ -41,7 +41,7 @@ public class ChaosService {
     FailureGeneratorAgent agent;
 
     // Emulates a log flow on each 1.3s
-    @Scheduled(every = "1.3s")
+    @Scheduled(every = "1.5s")
     void generateChaos() {
         // Randomly select a component
         List<String> components = List.copyOf(COMPONENT_TECH_MAP.keySet());
@@ -61,7 +61,17 @@ public class ChaosService {
         try {
             String correlationId = java.util.UUID.randomUUID().toString();
             LogAnalysisResult analysis = analyzer.analyze(logEntry, correlationId);
-            LogAnalysisWebSocket.broadcast(analysis);
+            // Create a new result with the original log included
+            LogAnalysisResult resultWithLog = new LogAnalysisResult(
+                analysis.severity(),
+                analysis.component(),
+                analysis.errorType(),
+                analysis.rootCauseSummary(),
+                analysis.suggestedAction(),
+                analysis.timestamp(),
+                logEntry  // Add the original log
+            );
+            LogAnalysisWebSocket.broadcast(resultWithLog);
         } catch (Exception e) {
             LOG.errorf("Failed to analyze log: %s", e.getMessage());
         }

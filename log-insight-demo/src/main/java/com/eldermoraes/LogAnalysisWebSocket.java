@@ -50,13 +50,14 @@ public class LogAnalysisWebSocket {
      */
     private static String toJson(LogAnalysisResult result) {
         return String.format(
-            "{\"severity\":\"%s\",\"component\":\"%s\",\"errorType\":\"%s\",\"rootCauseSummary\":\"%s\",\"suggestedAction\":\"%s\",\"timestamp\":\"%s\"}",
+            "{\"severity\":\"%s\",\"component\":\"%s\",\"errorType\":\"%s\",\"rootCauseSummary\":\"%s\",\"suggestedAction\":\"%s\",\"timestamp\":\"%s\",\"originalLog\":\"%s\"}",
             escapeJson(result.severity()),
             escapeJson(result.component()),
             escapeJson(result.errorType()),
             escapeJson(result.rootCauseSummary()),
             escapeJson(result.suggestedAction()),
-            java.time.Instant.now().toString()
+            java.time.Instant.now().toString(),
+            escapeJson(result.originalLog())
         );
     }
 
