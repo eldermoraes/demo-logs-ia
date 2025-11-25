@@ -36,5 +36,5 @@ public interface LogAnalyzerAgent {
         IMPORTANT: Use exactly these severity values: INFO, WARN, ERROR, or CRITICAL (not WARNING).
         Return ONLY the JSON object, no markdown formatting or additional text.
     """)
-    LogAnalysisResult analyze(String logContent, String correlationId);
+    LogAnalysis analyze(String logContent, String correlationId);
 }

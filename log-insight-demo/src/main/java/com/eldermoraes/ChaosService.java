@@ -1,8 +1,10 @@
 package com.eldermoraes;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 import io.quarkus.scheduler.Scheduled;
+import jakarta.transaction.Transactional;
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -20,6 +22,9 @@ public class ChaosService {
 
     @Inject
     FailureGeneratorAgent agent;
+    
+    @Inject
+    Event<LogAnalysisPersistedEvent> logAnalysisEvent;
 
     // Paired component-tech mapping for realistic error scenarios
     private static final Map<String, List<String>> COMPONENT_TECH_MAP = Map.ofEntries(
@@ -57,23 +62,22 @@ public class ChaosService {
         // IRL, this could be sent to stdout or even Kafka
         LOG.error(logEntry);
 
-        // Analyze the log and broadcast to UI
         try {
             String correlationId = java.util.UUID.randomUUID().toString();
-            LogAnalysisResult analysis = analyzer.analyze(logEntry, correlationId);
-            // Create a new result with the original log included
-            LogAnalysisResult resultWithLog = new LogAnalysisResult(
-                analysis.severity(),
-                analysis.component(),
-                analysis.errorType(),
-                analysis.rootCauseSummary(),
-                analysis.suggestedAction(),
-                analysis.timestamp(),
-                logEntry  // Add the original log
-            );
-            LogAnalysisWebSocket.broadcast(resultWithLog);
+
+            // Analyze the log and broadcast to UI
+            persistAnalysis(analyzer.analyze(logEntry, correlationId), logEntry);
         } catch (Exception e) {
             LOG.errorf("Failed to analyze log: %s", e.getMessage());
         }
+    }
+    
+    @Transactional
+    void persistAnalysis(LogAnalysis analysis, String logEntry) {
+        analysis.originalLog = logEntry;
+        analysis.persistAndFlush();
+        
+        // Fire CDI event - the broadcaster will handle WebSocket notification
+        logAnalysisEvent.fire(new LogAnalysisPersistedEvent(analysis));
     }
 }
