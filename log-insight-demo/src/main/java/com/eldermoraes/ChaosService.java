@@ -18,6 +18,9 @@ public class ChaosService {
     @Inject
     LogAnalyzerAgent analyzer;
 
+    @Inject
+    FailureGeneratorAgent agent;
+
     // Paired component-tech mapping for realistic error scenarios
     private static final Map<String, List<String>> COMPONENT_TECH_MAP = Map.ofEntries(
         Map.entry("database_connection_pool", List.of("postgres", "mysql", "mongodb", "oracle", "mariadb")),
@@ -37,10 +40,7 @@ public class ChaosService {
         Map.entry("logging_aggregator", List.of("elasticsearch", "splunk", "datadog", "loki", "fluentd"))
     );
 
-    @Inject
-    FailureGeneratorAgent agent;
-
-    // Emulates a log flow on each 1.3s
+    // Emulates a log flow on each 1.5s
     @Scheduled(every = "1.5s")
     void generateChaos() {
         // Randomly select a component

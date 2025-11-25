@@ -13,7 +13,7 @@ public interface LogAnalyzerAgent {
         
         Classify the log severity based on the log level:
         - ERROR or FATAL logs → severity: "ERROR" or "CRITICAL"
-        - WARN logs → severity: "WARN"
+        - WARN or WARNING logs → severity: "WARN"
         - INFO, DEBUG, TRACE logs → severity: "INFO"
         
         For ERROR/CRITICAL logs, provide detailed analysis including errorType, rootCauseSummary, and suggestedAction.
@@ -33,6 +33,7 @@ public interface LogAnalyzerAgent {
           "suggestedAction": "recommended action or N/A"
         }
         
+        IMPORTANT: Use exactly these severity values: INFO, WARN, ERROR, or CRITICAL (not WARNING).
         Return ONLY the JSON object, no markdown formatting or additional text.
     """)
     LogAnalysisResult analyze(String logContent, String correlationId);

@@ -51,7 +51,7 @@ public class LogAnalysisWebSocket {
     private static String toJson(LogAnalysisResult result) {
         return String.format(
             "{\"severity\":\"%s\",\"component\":\"%s\",\"errorType\":\"%s\",\"rootCauseSummary\":\"%s\",\"suggestedAction\":\"%s\",\"timestamp\":\"%s\",\"originalLog\":\"%s\"}",
-            escapeJson(result.severity()),
+            result.severity().name(),
             escapeJson(result.component()),
             escapeJson(result.errorType()),
             escapeJson(result.rootCauseSummary()),
