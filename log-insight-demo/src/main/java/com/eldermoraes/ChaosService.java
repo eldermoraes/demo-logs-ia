@@ -1,8 +1,5 @@
 package com.eldermoraes;
 
-import dev.langchain4j.service.UserMessage;
-import dev.langchain4j.service.SystemMessage;
-import io.quarkiverse.langchain4j.RegisterAiService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import io.quarkus.scheduler.Scheduled;
@@ -68,17 +65,5 @@ public class ChaosService {
         } catch (Exception e) {
             LOG.errorf("Failed to analyze log: %s", e.getMessage());
         }
-    }
-
-    @RegisterAiService
-    public interface FailureGeneratorAgent {
-        @SystemMessage("""
-            You are a distributed systems failure simulator.
-            Generate ONE SINGLE Java log line (Log4j format) simulating a critical error.
-            Include timestamp, thread name, level (ERROR), and a short but realistic stack trace.
-            Do not include markdown or explanations. Only the raw log.
-        """)
-        @UserMessage("Generate a realistic error for the {component} component using {tech} technology.")
-        String generateErrorLog(String component, String tech);
     }
 }
