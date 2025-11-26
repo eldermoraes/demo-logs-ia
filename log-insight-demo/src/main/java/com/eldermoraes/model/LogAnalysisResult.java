@@ -1,4 +1,4 @@
-package com.eldermoraes;
+package com.eldermoraes.model;
 
 
 public record LogAnalysisResult (

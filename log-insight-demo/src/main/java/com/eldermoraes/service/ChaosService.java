@@ -1,5 +1,8 @@
-package com.eldermoraes;
+package com.eldermoraes.service;
 
+import com.eldermoraes.ai.FailureGeneratorAgent;
+import com.eldermoraes.ai.LogAnalyzerAgent;
+import com.eldermoraes.model.LogAnalysis;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;

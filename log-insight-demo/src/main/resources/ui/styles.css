@@ -125,6 +125,16 @@ header h1 {
     transform: translateY(-1px);
 }
 
+.btn-success {
+    background: #10b981;
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+    transform: translateY(-1px);
+}
+
 .checkbox-label {
     display: flex;
     align-items: center;

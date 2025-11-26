@@ -1,14 +1,17 @@
-package com.eldermoraes;
+package com.eldermoraes.service;
 
+import com.eldermoraes.model.LogAnalysisResult;
+import com.eldermoraes.model.LogAnalysis;
+import com.eldermoraes.ui.LogAnalysisWebSocket;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
 import jakarta.enterprise.event.TransactionPhase;
 import org.jboss.logging.Logger;
 
 @ApplicationScoped
-public class LogAnalysisBroadcaster {
+public class LogAnalysisBroadcasterService {
     
-    private static final Logger LOG = Logger.getLogger(LogAnalysisBroadcaster.class);
+    private static final Logger LOG = Logger.getLogger(LogAnalysisBroadcasterService.class);
     
     /**
      * Observes LogAnalysis persistence events and broadcasts to WebSocket clients

@@ -1,4 +1,6 @@
-package com.eldermoraes;
+package com.eldermoraes.service;
+
+import com.eldermoraes.model.LogAnalysis;
 
 /**
  * CDI event fired when a LogAnalysis entity is persisted

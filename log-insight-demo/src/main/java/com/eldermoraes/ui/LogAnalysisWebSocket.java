@@ -1,5 +1,6 @@
-package com.eldermoraes;
+package com.eldermoraes.ui;
 
+import com.eldermoraes.model.LogAnalysisResult;
 import io.quarkus.websockets.next.OnOpen;
 import io.quarkus.websockets.next.OnClose;
 import io.quarkus.websockets.next.WebSocket;

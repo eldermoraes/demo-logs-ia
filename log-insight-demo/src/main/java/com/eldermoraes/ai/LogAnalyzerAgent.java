@@ -1,5 +1,6 @@
-package com.eldermoraes;
+package com.eldermoraes.ai;
 
+import com.eldermoraes.model.LogAnalysis;
 import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;

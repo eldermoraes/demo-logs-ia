@@ -23,6 +23,41 @@ const autoScrollCheckbox = document.getElementById('auto-scroll');
 const severityFilter = document.getElementById('severity-filter');
 const tableContainer = document.querySelector('.table-container');
 
+// Load existing logs from database
+async function loadExistingLogs() {
+    try {
+        console.log('📥 Loading existing logs from database...');
+        const response = await fetch('/api/logs');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const existingLogs = await response.json();
+        console.log(`✅ Loaded ${existingLogs.length} existing logs`);
+        
+        // Add all existing logs (they come newest first from the API)
+        existingLogs.reverse().forEach(log => {
+            logs.push(log);
+            totalLogs++;
+            
+            // Update counters
+            if (log.severity === 'CRITICAL') {
+                criticalCount++;
+            } else if (log.severity === 'ERROR') {
+                errorCount++;
+            } else if (log.severity === 'WARN') {
+                warningCount++;
+            } else if (log.severity === 'INFO') {
+                infoCount++;
+            }
+        });
+        
+        updateCounters();
+        renderLogs();
+    } catch (error) {
+        console.error('❌ Failed to load existing logs:', error);
+    }
+}
+
 // Initialize WebSocket connection
 function connectWebSocket() {
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
@@ -304,6 +339,7 @@ severityFilter.addEventListener('change', renderLogs);
 // Initialize
 loadColumnWidths();
 initColumnResize();
+loadExistingLogs(); // Load existing logs from database first
 connectWebSocket();
 emptyState.classList.add('visible');
 

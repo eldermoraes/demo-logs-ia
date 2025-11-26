@@ -1,8 +1,7 @@
-package com.eldermoraes;
+package com.eldermoraes.ui;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -32,6 +31,27 @@ public class UIResource {
     @Produces("application/javascript")
     public Response getAppJs() {
         return serveFile("ui/app.js", "application/javascript");
+    }
+
+    @GET
+    @Path("report")
+    @Produces(MediaType.TEXT_HTML)
+    public Response getReportIndex() {
+        return serveFile("ui/report/index.html", MediaType.TEXT_HTML);
+    }
+
+    @GET
+    @Path("report/styles.css")
+    @Produces("text/css")
+    public Response getReportStyles() {
+        return serveFile("ui/report/styles.css", "text/css");
+    }
+
+    @GET
+    @Path("report/app.js")
+    @Produces("application/javascript")
+    public Response getReportAppJs() {
+        return serveFile("ui/report/app.js", "application/javascript");
     }
 
     private Response serveFile(String resourcePath, String mediaType) {
