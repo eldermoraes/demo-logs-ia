@@ -11,7 +11,6 @@ const reportTimestamp = document.getElementById('report-timestamp');
 const errorMessage = document.getElementById('error-message');
 const refreshBtn = document.getElementById('refresh-btn');
 const retryBtn = document.getElementById('retry-btn');
-const copyBtn = document.getElementById('copy-btn');
 const pageSizeInput = document.getElementById('pageSize');
 
 // Initialize
@@ -19,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Verify all elements exist
     if (!loadingState || !errorState || !noDataState || !reportContent ||
         !reportMarkdown || !reportTimestamp || !errorMessage ||
-        !refreshBtn || !retryBtn || !copyBtn) {
+        !refreshBtn || !retryBtn) {
         console.error('Some DOM elements are missing!');
         console.log('loadingState:', loadingState);
         console.log('errorState:', errorState);
@@ -30,7 +29,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('errorMessage:', errorMessage);
         console.log('refreshBtn:', refreshBtn);
         console.log('retryBtn:', retryBtn);
-        console.log('copyBtn:', copyBtn);
         return;
     }
     
@@ -39,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Event listeners
     refreshBtn.addEventListener('click', () => loadHealthReport());
     retryBtn.addEventListener('click', () => loadHealthReport());
-    copyBtn.addEventListener('click', copyReportToClipboard);
 });
 
 // Load health report from API
@@ -91,16 +88,12 @@ async function loadHealthReport() {
 
 // Display the report
 function displayReport(markdownText) {
-    // Convert markdown to HTML (simple implementation)
-    const htmlContent = convertMarkdownToHtml(markdownText);
-    reportMarkdown.innerHTML = htmlContent;
+    // Display as plain text (no markdown conversion)
+    reportMarkdown.textContent = markdownText;
     
     // Update timestamp
     const now = new Date();
     reportTimestamp.textContent = now.toLocaleString();
-    
-    // Store raw markdown for copying
-    reportMarkdown.dataset.rawMarkdown = markdownText;
 }
 
 // Simple markdown to HTML converter
@@ -173,33 +166,6 @@ function convertMarkdownToHtml(markdown) {
     });
     
     return html;
-}
-
-// Copy report to clipboard
-async function copyReportToClipboard() {
-    const rawMarkdown = reportMarkdown.dataset.rawMarkdown;
-    
-    if (!rawMarkdown) {
-        alert('No report to copy');
-        return;
-    }
-    
-    try {
-        await navigator.clipboard.writeText(rawMarkdown);
-        
-        // Visual feedback
-        const originalText = copyBtn.innerHTML;
-        copyBtn.innerHTML = '<span class="btn-icon">✓</span> Copied!';
-        copyBtn.style.background = '#10b981';
-        
-        setTimeout(() => {
-            copyBtn.innerHTML = originalText;
-            copyBtn.style.background = '';
-        }, 2000);
-    } catch (error) {
-        console.error('Failed to copy:', error);
-        alert('Failed to copy report to clipboard');
-    }
 }
 
 // Show specific state
