@@ -43,3 +43,7 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+
+# Allow log files under src/main/resources/logs/
+!src/main/resources/logs/
+!src/main/resources/logs/*.log
