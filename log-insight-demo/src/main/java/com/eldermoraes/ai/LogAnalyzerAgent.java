@@ -5,7 +5,7 @@ import dev.langchain4j.service.UserMessage;
 import dev.langchain4j.service.SystemMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
-@RegisterAiService(modelName = "demo-openai")
+@RegisterAiService(modelName = "demo-analyzer")
 public interface LogAnalyzerAgent {
 
     @SystemMessage("""

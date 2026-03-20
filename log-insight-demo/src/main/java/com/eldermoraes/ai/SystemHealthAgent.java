@@ -4,7 +4,7 @@ import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
 
-@RegisterAiService(modelName = "demo-llama")
+@RegisterAiService(modelName = "demo-generator")
 public interface SystemHealthAgent {
 
     @SystemMessage("""

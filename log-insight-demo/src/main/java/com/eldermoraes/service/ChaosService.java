@@ -21,13 +21,16 @@ public class ChaosService {
     private final Random random = new Random();
 
     @Inject
-    LogAnalyzerAgent analyzer;
+    LogAnalyzerAgent analyzerAgent;
 
     @Inject
-    FailureGeneratorAgent agent;
+    FailureGeneratorAgent generatorAgent;
     
     @Inject
     Event<LogAnalysisPersistedEvent> logAnalysisEvent;
+
+    @Inject
+    LogFileService logFileService;
 
     // Paired component-tech mapping for realistic error scenarios
     private static final Map<String, List<String>> COMPONENT_TECH_MAP = Map.ofEntries(
@@ -48,7 +51,7 @@ public class ChaosService {
         Map.entry("logging_aggregator", List.of("elasticsearch", "splunk", "datadog", "loki", "fluentd"))
     );
 
-    // Emulates a log flow on each 1.5s
+    // Simulates a log flow on each 1.5s
     @Scheduled(every = "1.5s")
     void generateChaos() {
         // Randomly select a component
@@ -60,16 +63,17 @@ public class ChaosService {
         String tech = technologies.get(random.nextInt(technologies.size()));
         
         // Asks AI to create a realistic error log
-        String logEntry = agent.generateErrorLog(1L, component, tech);
+        String logEntry = generatorAgent.generateErrorLog(1L, component, tech);
 
         // IRL, this could be sent to stdout or even Kafka
         LOG.error(logEntry);
+        try { logFileService.write(logEntry); } catch (Exception e) { /* already logged inside */ }
 
         try {
             String correlationId = java.util.UUID.randomUUID().toString();
 
             // Analyze the log and broadcast to UI
-            persistAnalysis(analyzer.analyze(logEntry, correlationId), logEntry);
+            persistAnalysis(analyzerAgent.analyze(logEntry, correlationId), logEntry);
         } catch (Exception e) {
             LOG.errorf("Failed to analyze log: %s", e.getMessage());
         }
